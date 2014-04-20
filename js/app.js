@@ -1,0 +1,1 @@
+(function(){!function(n){var a;return a=function(){var a,o;return o=window.orientation,a=n("#primary-nav"),90!==o&&-90!==o?(n("body").addClass("has-fixed-nav"),a.addClass("navbar-fixed-top")):(n("body").removeClass("has-fixed-nav"),a.removeClass("navbar-fixed-top"))},n(window).on("load",function(){}),n(window).on("orientationchange",function(){return a()})}(jQuery)}).call(this);
