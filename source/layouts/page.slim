@@ -1,0 +1,17 @@
+doctype 5
+html[lang="en"]
+  head
+    = partial "partials/meta"
+    = partial "partials/head_assets"
+  body class="has-fixed-nav #{page_classes}"
+    = partial "partials/header"
+    .container
+      .row
+        article.col-xs-12.col-md-9
+          h1
+            = current_page.data.title
+          = yield
+
+      = partial "partials/footer"
+
+    = javascript_include_tag  "all"

@@ -1,0 +1,9 @@
+aside
+  h3
+    | Recent Articles
+  ol
+    - blog.articles[0...10].each do |article|
+      li
+        = link_to article.title, article
+        span<>
+          = article.date.strftime('%b %e')

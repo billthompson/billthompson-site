@@ -2,7 +2,7 @@
 # Blog settings
 ###
 
-# Time.zone = "UTC"
+Time.zone = "America/Chicago"
 
 activate :blog do |blog|
   # This will add a prefix to all links, template references and source paths
@@ -32,6 +32,9 @@ end
 page "/feed.xml", layout: false
 page "/sitemap.xml", layout: false
 
+activate :directory_indexes
+
+
 ###
 # Compass
 ###
@@ -42,11 +45,13 @@ page "/sitemap.xml", layout: false
 # end
 
 # Change Compass configuration
-# config :development do
+configure :development do
+  set :debug_assets, true
+
   compass_config do |config|
     config.sass_options = {:debug_info => true}
   end
-# end
+end
 
 ###
 # Page options, layouts, aliases and proxies
@@ -103,21 +108,52 @@ activate :livereload
 # Site Settings
 ###
 # Set site setting, used in helpers / sitemap.xml / feed.xml.
-set :site_url, 'http://blog.url.com'
-set :site_author, 'Blog author'
-set :site_title, 'Blog title'
-set :site_description, 'Blog description'
+set :site_url, 'http://billthompson.me'
+set :site_author, 'Bill Thompson'
+set :site_title, 'Bill Thompson'
+set :site_description, 'Bill Thompson - A full-stack software engineer in Austin, TX.'
 # Select the theme from bootswatch.com.
 # If false, you can get plain bootstrap style.
-# set :theme_name, 'flatly'
-set :theme_name, false
+#set :theme_name, 'flatly'
+set :theme_name, 'readable'
+
 # set @analytics_account, like "XX-12345678-9"
-@analytics_account = false
+@analytics_account = 'UA-19996001-1'
 
 # Asset Settings
 set :css_dir, 'css'
 set :js_dir, 'js'
 set :images_dir, 'images'
+
+set :cache_favicon, true
+
+activate :favicon_maker do |f|
+  unless :cache_favicon || File.join(root, 'source', 'favicon.ico').exists?
+    avatar_asset_path = File.join(root, 'source', 'images', 'avatar')
+
+    Dir.foreach(avatar_asset_path) do |f|
+      fn = File.join(avatar_asset_path, f)
+      File.delete(fn) if f != '.' && f != '..'
+    end
+
+    agent = Mechanize.new
+    author = YAML.load_file(File.join(root, 'data', 'author.yml'))
+    agent.get(author['gravatar'].to_s + "?s=152").save "#{avatar_asset_path}/152x152.png"
+
+    f.template_dir  = avatar_asset_path
+    f.output_dir    = File.join(root, 'source')
+    f.icons = {
+        "152x152.png" => [
+            { icon: "apple-touch-icon-152x152-precomposed.png" },
+            { icon: "apple-touch-icon-114x114-precomposed.png" },
+            { icon: "apple-touch-icon-72x72-precomposed.png" },
+            { icon: "mstile-144x144", format: :png },
+            { icon: "favicon.png", size: "16x16" },
+            { icon: "favicon.ico", size: "64x64" },
+        ]
+    }
+  end
+end
 
 after_configuration do
   @bower_config = JSON.parse(IO.read("#{root}/.bowerrc"))
@@ -167,7 +203,9 @@ end
 ###
 # Deploy settings
 ###
-
+activate :deploy do |deploy|
+  deploy.method = :git
+end
 # ftp deployment configuration. 
 # activate :deploy do |deploy|
 #   deploy.method = :ftp

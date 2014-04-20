@@ -7,10 +7,17 @@
 @import "sass-bootstrap/lib/variables";
 @import "bootswatch-scss/<%=theme_name%>/variables";
 <% end %>
+
 @import "sass-bootstrap/lib/bootstrap";
 <% if theme_name %> 
 @import "bootswatch-scss/<%=theme_name%>/bootswatch";
 <% end %>
+
+@mixin btn-shadow($color) {
+
+  //@include gradient-vertical-three-colors(lighten($color, 10%), $color, 6%, darken($color, 4%));
+  border: 1px solid darken($color, 10%);
+}
 
 @import "font-awesome/scss/font-awesome";
 

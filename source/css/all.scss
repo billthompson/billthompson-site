@@ -3,6 +3,41 @@
 @import "settings";
 @import "imports";
 
-body {
+body.has-fixed-nav {
   margin-top: $marginTopBody;
+}
+
+.btn {
+  .glyphicon {
+    margin-top: 0.1em;
+    margin-left: 0.5em;
+  }
+}
+
+.navbar-inverse .navbar-nav.social-nav > li > a {
+  &:hover {
+    background-color: $gray;
+  }
+}
+
+.post-timestamp {
+  margin-bottom: 1.5em;
+
+  hr {
+    margin: 0.5em 0;
+  }
+
+  p {
+    font-size: 0.8em;
+    color: $gray-light;
+  }
+
+  .glyphicon {
+    margin-right: 0.5em;
+  }
+}
+
+footer {
+  color: $gray-light;
+  font-size: $font-size-base * 0.8;
 }

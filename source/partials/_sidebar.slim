@@ -1,4 +1,4 @@
-.col-lg-3.col-md-3
+.col-xs-12.col-lg-3.col-md-3
   .well
     h4 Tags
     ul.list-unstyled
@@ -8,7 +8,9 @@
           |  (
           = articles.size
           | )
-  .well
+
+    hr
+
     h4 By year
     ol
       - blog.articles.group_by {|a| a.date.year }.each do |year, articles|
@@ -17,6 +19,3 @@
           |  (
           = articles.size
           | )
-  .well
-    h4 Side Widget Well
-    p Bootstrap's default well for sidebar
