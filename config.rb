@@ -205,6 +205,7 @@ end
 ###
 activate :deploy do |deploy|
   deploy.method = :git
+  deploy.branch = 'master'
 end
 # ftp deployment configuration. 
 # activate :deploy do |deploy|
