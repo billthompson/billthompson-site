@@ -157,10 +157,14 @@ end
 
 after_configuration do
   @bower_config = JSON.parse(IO.read("#{root}/.bowerrc"))
-  Dir.glob(File.join("#{root}", @bower_config["directory"], "*", "fonts")) do |f|
+  bower_components_path = @bower_config["directory"]
+
+  bower_bootstrap_helper bower_components_path
+
+  Dir.glob(File.join("#{root}", bower_components_path, "*", "fonts")) do |f|
     sprockets.append_path f
   end
-  sprockets.append_path File.join "#{root}", @bower_config["directory"]
+  sprockets.append_path File.join "#{root}", bower_components_path
 end
 
 
@@ -214,3 +218,20 @@ end
 #   deploy.password = "ftp-password"
 #   deploy.path = "ftp-path"
 # end
+
+
+###
+# Bower bootstrap-sass-official helper
+# The Sprocket paths in the bootstrap.js fail (bootstrap/{plugin}). Instead we need to reference the full
+# bower_components path.
+###
+def bower_bootstrap_helper(bower_components_path)
+  bootstrap_js_path = File.join(root, bower_components_path, 'bootstrap-sass-official', 'vendor', 'assets', 'javascripts', 'bootstrap.js')
+  bootstrap_js_file = File.read(bootstrap_js_path)
+
+  bootstrap_sprockets_path = File.join('bootstrap-sass-official', 'vendor', 'assets', 'javascripts', 'bootstrap/')
+
+  replace_text = "require #{bootstrap_sprockets_path}"
+
+  File.write(bootstrap_js_path, bootstrap_js_file.gsub(/require bootstrap\//, replace_text))
+end
